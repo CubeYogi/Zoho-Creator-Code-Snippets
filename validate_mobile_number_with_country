@@ -1,0 +1,70 @@
+void mobile_number_validation_with_country(int contact_id)
+{
+	// Validate the Contact ID 
+	if(input.contact_id != null && input.contact_id > 0)
+	{
+		// Fetch the  Customer details using Contact ID
+		customer_rec = customer[ID == input.contact_id];
+		// Validate the Customer Phone number
+		if(customer_rec.phone_number != null && customer_rec.phone_number.trim() != "")
+		{
+			// Remove the unwated symbols
+			phone_no = customer_rec.phone_number.replaceAll("[/\-\(\)_@#\^!+\$%\&\*:;`~=.,\\'\']","");
+			phone_no = phone_no.trim();
+			phone_no = phone_no.replaceAll(" ","");
+			phone_no = phone_no.removeAllAlpha();
+			length = phone_no.length();
+			if(customer_rec.country != null)
+			{
+				if(length <= 15)
+				{
+					country_code_rec = Country_Code[ID == customer_rec.country];
+					if(country_code_rec.ID != null)
+					{
+						//Check US, UK, India, Australia country code
+						if(country_code_rec.country_code == "+1" || country_code_rec.country_code == "+91" || country_code_rec.country_code == "+44" || country_code_rec.country_code == "+61") {
+							//Check US, UK, India country code for mobile number length 10
+							if(length >= 10 && (country_code_rec.country_code == "+1" || country_code_rec.country_code == "+91" || country_code_rec.country_code == "+44" ))
+							{
+								customer_rec.phone_number_in_e164 = country_code_rec.country_code + phone_no.subString(length-10,length);
+								customer_rec.Comments="";
+							}
+							//Check Australia country code for mobile number length 9
+							else if(length >= 9 && (country_code_rec.country_code == "+61"))
+							{
+							 	customer_rec.phone_number_in_e164 = country_code_rec.country_code + phone_no.subString(length-9,length);
+							 	customer_rec.Comments="";
+							}
+							else {
+								customer_rec.phone_number_in_e164="";
+								customer_rec.Comments="Invalid phone number format";
+							}
+						} else {
+							customer_rec.phone_number_in_e164="";
+							customer_rec.Comments="Selected country not yet support";
+						}
+					}
+					else
+					{
+						customer_rec.phone_number_in_e164="";
+						customer_rec.Comments="No country code available";
+					}
+				} else {
+					customer_rec.phone_number_in_e164="";
+					customer_rec.Comments="Invalid phone number format";
+				}
+			}
+			else
+			{
+				customer_rec.phone_number_in_e164="";
+				customer_rec.Comments="Country not selected";
+			}
+		} else {
+		customer_rec.phone_number_in_e164="";
+		customer_rec.Comments="Phone number empty";
+		}
+	} else {
+		customer_rec.phone_number_in_e164="";
+		customer_rec.Comments="Invalid phone number parameter";
+	}
+}
