@@ -1,0 +1,56 @@
+string validate_mobile_number(string mobile_number)
+{
+	if(mobile_number != null && mobile_number.trim() != "")
+		{
+			// Remove the unwated symbols
+			flag = 0;
+			phone_no = mobile_number.replaceAll("[/\-\(\)_@#\^!+\$%\&\*:;`~=.,\\'\']","");
+			phone_no = phone_no.trim();
+			phone_no = phone_no.replaceAll(" ","");
+			phone_no = phone_no.removeAllAlpha();
+			length = phone_no.length();
+			length = phone_no.length();
+			if(length <= 14)
+			{
+				// Check the mobile number starts with country code
+				if(phone_no.startsWith("+91") || phone_no.startsWith("+1") || phone_no.startsWith("+61") || phone_no.startsWith("+44"))
+				{
+					return phone_no;
+				}
+				else if(length == 11 && phone_no.startsWith("0") && phone_no.subString(1,2) != "0")
+				{
+					return phone_no.replaceFirst("0","+91");
+				}
+				else if(length == 12 && phone_no.startsWith("91") && phone_no.subString(2,3) != "0")
+				{
+					return "+" + phone_no;
+				}
+				else if(length == 11 && phone_no.startsWith("1") && phone_no.subString(1,2) != "0")
+				{
+					return "+" + phone_no;
+				}
+				else if(length == 11 && phone_no.startsWith("61") && phone_no.subString(2,3) != "0")
+				{
+					return "+" + phone_no;
+				}
+				else if(length == 12 && phone_no.startsWith("44") && phone_no.subString(2,3) != "0")
+				{
+					return "+" + phone_no;
+				}
+				else
+				{
+					return "Invalid Phone Number Format";
+				}
+			}
+			else
+			{
+				return "Invalid Phone Number Format";
+			}
+	}
+	else
+	{
+		return "Invalid Phone Number Format";
+	}
+	return "";
+}
+© 2018 GitHub, Inc.
