@@ -1,3 +1,7 @@
+/** 
+@summary: Validate mobile number
+@author: Cube Yogi
+**/
 string validate_mobile_number(string mobile_number)
 {
 	if(mobile_number != null && mobile_number.trim() != "")
